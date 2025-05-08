@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animated Input with Local Storage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f0f4f8;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.15);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .output {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .output.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Enter Your Name</h2>
+    <input type="text" id="nameInput" placeholder="Your name..." />
+    <button onclick="saveName()">Save</button>
+    <div id="output" class="output"></div>
+  </div>
+
+  <script>
+    const nameInput = document.getElementById("nameInput");
+    const output = document.getElementById("output");
+
+    function saveName() {
+      const name = nameInput.value.trim();
+      if (name) {
+        localStorage.setItem("savedName", name);
+        displayName(name);
+      }
+    }
+
+    function displayName(name) {
+      output.textContent = `Hello, ${name}!`;
+      output.classList.add("show");
+    }
+
+    // Load from localStorage on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedName = localStorage.getItem("savedName");
+      if (savedName) {
+        nameInput.value = savedName;
+        displayName(savedName);
+      }
+    });
+  </script>
+</body>
+</html>
